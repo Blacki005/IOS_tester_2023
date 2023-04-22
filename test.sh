@@ -5,6 +5,9 @@ RED='\033[0;31m'
 YELLOW='\033[0;33m'
 NC='\033[0m' # No Color
 
+F=0
+P=0
+E=0
 proj2out_check() {
     if [[ ! -f "proj2.out" ]]
     then
@@ -18,8 +21,9 @@ proj2out_check() {
     exit 1
     fi
 
-    if [[ $1 == "-f" ]]
+    if [[ "$F" == 1 ]]
     then
+        echo "F = $F"
         if [[ ! -f "./wordcount" ]]
         then
             echo "Error: Wordcount file not found, make sure it is in the same directory as test script!"
@@ -48,7 +52,7 @@ proj2out_check() {
         #               if((date_a < $i) && ($i < date_b)) {
 
         rm ./wordcount.tmp
-    elif [[ $1 == "-p" ]]
+    elif [[ "$P" == 1 ]]
     then
         echo -e "${YELLOW}"
         python3 kontrola-vystupu.py
@@ -78,6 +82,36 @@ then
     echo "PS: Berte to s rezervou, nemusi to fungovat spravne vsem, je to splacane na koleni v autobusu a jsem clovek co ze shell projektu dostal 6 bodu"
     exit 0
 fi
+
+while getopts "fphe" opt; do
+    case "$opt" in
+        h)
+            help
+            exit
+            ;;
+        f)
+            if [ "$P" == 1 ]; then
+                echo "-p a -f cannot be together" 
+                exit 1
+            fi
+            F=1
+            ;;
+        p)
+            if [ "$F" == 1 ]; then
+                echo "-p a -f cannot be together" 
+                exit 1
+            fi
+            P=1
+            ;;
+        e)
+            E=1
+            ;;
+        *)
+            echo "Invalid argument" 
+            exit 1
+            ;;
+    esac
+done
 
 if [[ ! -f "Makefile" ]]
 then
@@ -428,7 +462,7 @@ echo "Testing max/min valid arguments..."
         fi
     fi
 
-if [[ $1 == "-e" ]]
+if [[ "$E" == 1 ]]
 then
 #test extremnich hodnot NZ a NU
 echo "Ruining your day by tring arguments that are far above normally used numbers..."
