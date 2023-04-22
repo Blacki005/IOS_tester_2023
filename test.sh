@@ -48,6 +48,11 @@ proj2out_check() {
         #               if((date_a < $i) && ($i < date_b)) {
 
         rm ./wordcount.tmp
+    elif [[ $1 == "-p" ]]
+    then
+        echo -e "${YELLOW}"
+        python3 kontrola-vystupu.py
+        echo -e "${NC}"
     else
 
         echo -e "${YELLOW}"
@@ -68,6 +73,7 @@ then
     echo "Skript predpoklada, ze soubor proj2 si vytvori proj2.out, pokud soubor neexistuje - vystupove soubory jsou ve skriptu premazavany (coz odpovida implementaci, protoze jestli ma make vytvorit spustitelny program nezavisly na souborech, musi si program v pripade neexistence proj2.out tento soubor vytvorit)."
     echo "Je normalni, ze beh skriptu chvili trva, vzhledem k extremnim paramnetrum, ktere programu zadava. Chvili (cca 30 s) pockejte nez situaci vyhodnotite jako deadlock/nekonecny cyklus."
     echo "Parametr -f vyrazne urychli beh skriptu, ale testovani vystupu neni tak spolehlive - kontroluje se jen ze ke kazdemu vyskytu slova entering se vyskytuje i slovo serving."
+    echo "Parametr -p urychli beh skriptu tak, ze pouzije verzi kontroly vstupu prepsanou do pythonu, protoze bash slow."
     echo "V pripade problemu piste na dc: White Knight#8252"
     echo "PS: Berte to s rezervou, nemusi to fungovat spravne vsem, je to splacane na koleni v autobusu a jsem clovek co ze shell projektu dostal 6 bodu"
     exit 0
@@ -270,6 +276,9 @@ echo "Testing max/min valid arguments..."
         if [[ $1 == "-f" ]]
         then
             proj2out_check "-f"
+        elif [[ $1 == "-p" ]]
+        then
+            proj2out_check "-p"
         else
             proj2out_check
         fi
@@ -285,6 +294,9 @@ echo "Testing max/min valid arguments..."
         if [[ $1 == "-f" ]]
         then
             proj2out_check "-f"
+        elif [[ $1 == "-p" ]]
+        then
+            proj2out_check "-p"
         else
             proj2out_check
         fi
@@ -300,6 +312,9 @@ echo "Testing max/min valid arguments..."
         if [[ $1 == "-f" ]]
         then
             proj2out_check "-f"
+        elif [[ $1 == "-p" ]]
+        then
+            proj2out_check "-p"
         else
             proj2out_check
         fi
@@ -315,6 +330,9 @@ echo "Testing max/min valid arguments..."
         if [[ $1 == "-f" ]]
         then
             proj2out_check "-f"
+        elif [[ $1 == "-p" ]]
+        then
+            proj2out_check "-p"
         else
             proj2out_check
         fi
@@ -330,6 +348,9 @@ echo "Testing max/min valid arguments..."
         if [[ $1 == "-f" ]]
         then
             proj2out_check "-f"
+        elif [[ $1 == "-p" ]]
+        then
+            proj2out_check "-p"
         else
             proj2out_check
         fi
@@ -345,6 +366,9 @@ echo "Testing max/min valid arguments..."
         if [[ $1 == "-f" ]]
         then
             proj2out_check "-f"
+        elif [[ $1 == "-p" ]]
+        then
+            proj2out_check "-p"
         else
             proj2out_check
         fi
@@ -360,6 +384,9 @@ echo "Testing max/min valid arguments..."
         if [[ $1 == "-f" ]]
         then
             proj2out_check "-f"
+        elif [[ $1 == "-p" ]]
+        then
+            proj2out_check "-p"
         else
             proj2out_check
         fi
@@ -375,6 +402,9 @@ echo "Testing max/min valid arguments..."
         if [[ $1 == "-f" ]]
         then
             proj2out_check "-f"
+        elif [[ $1 == "-p" ]]
+        then
+            proj2out_check "-p"
         else
             proj2out_check
         fi
@@ -390,6 +420,9 @@ echo "Testing max/min valid arguments..."
         if [[ $1 == "-f" ]]
         then
             proj2out_check "-f"
+        elif [[ $1 == "-p" ]]
+        then
+            proj2out_check "-p"
         else
             proj2out_check
         fi
