@@ -1,4 +1,4 @@
-Snad vsechno info jde ziskat spustenim ./test -h a ja jsem linej, takze se mi to sem nechce prepisovat. Kdyby byly dotazy, piste na discord (taky v -h).
+Snad vsechno info jde ziskat spustenim ./test -h a ja jsem linej, takze se mi to sem nechce prepisovat. Kdyby byly dotazy, piste na discord White Knight#8252, nebo autorovi prislusne sekce ve ktere je problem (viz ./test.sh -h, CREDITS).
 
 Poznámka k C testovacímu skriptu:
  * Přepis skriptu 'kontrola-vystupu.sh' do C.
