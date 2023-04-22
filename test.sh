@@ -4,6 +4,9 @@ GREEN='\033[0;32m'
 RED='\033[0;31m'
 YELLOW='\033[0;33m'
 NC='\033[0m' # No Color
+F=0
+L=0
+E=0
 
 function show_help(){
     echo -e "Usage:
@@ -45,7 +48,7 @@ proj2out_check() {
     exit 1
     fi
 
-    if [[ $1 == "-l" ]]
+    if [[ $L == 1 ]]
     then
         if [[ ! -f "./kontrola-vystupu.sh" ]]
         then
@@ -63,7 +66,9 @@ proj2out_check() {
                 echo -e  "${RED}ERROR: File ./kontrola-vystupu.sh not found!${NC}"
                 exit 1
             else
+                echo -e "${YELLOW}"
                 cat ./proj2.out | ./kontrola-vystupu.sh
+                echo -e "${NC}"
             fi
         else
             echo -e "${YELLOW}"
@@ -74,10 +79,26 @@ proj2out_check() {
     rm ./proj2.out
 }
 
-if [[ $1 == "-h" ]]
-then
-    show_help
-fi
+
+
+while getopts "lhe" opt; do
+    case "$opt" in
+        h)
+            show_help
+            exit
+            ;;
+        l)
+            L=1
+            ;;
+        e)
+            E=1
+            ;;
+        *)
+            echo "Invalid argument" 
+            exit 1
+            ;;
+    esac
+done
 
 if [[ ! -f "Makefile" ]]
 then
@@ -428,7 +449,7 @@ echo "Testing max/min valid arguments..."
         fi
     fi
 
-if [[ $1 == "-e" ]]
+if [[ $E == 1 ]]
 then
 #test extremnich hodnot NZ a NU
 echo "Ruining your day by trying arguments that are far above normally used numbers..."
