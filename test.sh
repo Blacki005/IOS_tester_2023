@@ -7,6 +7,7 @@ NC='\033[0m' # No Color
 F=0
 L=0
 E=0
+C=0
 
 function show_help(){
     echo -e "Usage:
@@ -28,12 +29,16 @@ function show_help(){
         Běží s ${GREEN}L${NC}engálovým (pomalým) skriptem pro kontrolu výstupu.
         Tato varianta se použije automaticky, pokud v adresáři není soubor kontrol-vystupu.py
 
+    [${GREEN}-c${NC}]
+        Rychlá varianta kontroly výstupu implementovaná v ${GREEN}C${NC}.
+
     [${GREEN}-e${NC}]
         Zapne ${GREEN}E${NC}xtrémní variantu testů.
         Toto není dvakrát bezpečná varianta, zkouší to věci typu překročení rozsahu unsigned long u argumentů NU a NZ.
         Cvičící toto pravděpodobně totot nebudou testovat, je to spíše varianta pro IOS enjoyers.
     
     ${YELLOW}CREDITS${NC}
+        Tiger.CZ#1728 - c program pro kontrolu výstupu
         viotal#1256 - rychlý python skript na kontrolu výstupu
         Kubulambula#8412 - čitelný help
         White Knight#8252 - skript, testy
@@ -56,6 +61,23 @@ proj2out_check() {
             exit 1
         else
             cat ./proj2.out | ./kontrola-vystupu.sh
+        fi
+    elif [[ $C == 1 ]]
+    then
+        if [[ ! -f "./kontrola-vystupu.c" ]]
+        then
+            echo -e  "${YELLOW}WARNING: File ./kontrola-vystupu.c not found, running with slower kontrola-vystupu.sh!${NC}"
+            if [[ ! -f "./kontrola-vystupu.sh" ]]
+            then
+                echo -e  "${RED}ERROR: File ./kontrola-vystupu.sh not found!${NC}"
+                exit 1
+            else
+                echo -e "${YELLOW}"
+                cat ./proj2.out | ./kontrola-vystupu.sh
+                echo -e "${NC}"
+            fi
+        else
+            cat ./proj2.out | ./kontrola-vystupu.c
         fi
     else
         if [[ ! -f "./kontrola-vystupu.py" ]]
@@ -81,17 +103,28 @@ proj2out_check() {
 
 
 
-while getopts "lhe" opt; do
+while getopts "lhec" opt; do
     case "$opt" in
         h)
             show_help
             exit
             ;;
         l)
+            if [[ $C == 1 ]]
+            then
+                echo "${RED}ERROR: options -l and -c are mutually exclusive!${NC}"
+            fi
             L=1
             ;;
         e)
             E=1
+            ;;
+        c)
+            C=1
+            if [[ $L == 1 ]]
+            then
+                echo "${RED}ERROR: options -l and -c are mutually exclusive!${NC}"
+            fi
             ;;
         *)
             echo "Invalid argument" 
