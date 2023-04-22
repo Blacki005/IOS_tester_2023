@@ -31,6 +31,14 @@ function show_help(){
 
     [${GREEN}-c${NC}]
         Rychlá varianta kontroly výstupu implementovaná v ${GREEN}C${NC}.
+        První číslo v Line format erroru, je číslo řádku v kódu, který neodpovídá formátu.
+        * Řádky delší než 64 znaků rozdělí na 2 (takže nespadne, ale bere je jako chybu), ale pokud
+            máte korektní řešení, neměl by žádný řádek být tak dlouhý, dokud teda nemáte ve výstupu více
+            jak 100M řádků.
+        * K rychlosti: nečekal, jsem takový speedup, ale dal jsem původnímu skriptu soubor s 1.7M řádky a ani
+            po 15 minutách nevyhodil výsledek. C to zvládlo do 200 ms. (Hlavně protože to prostě se rovnou rozhoduje
+            kam v kódu to půjde a navíc ten originální skript nic víc než kontrolu formátu řádků nedělá)
+        Jo a není to hezký kód :smrckaBat:, pokud bude nějaký problém, tak mě tagněte na discordu  @Tiger.CZ#1728
 
     [${GREEN}-e${NC}]
         Zapne ${GREEN}E${NC}xtrémní variantu testů.
