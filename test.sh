@@ -72,8 +72,8 @@ then
     echo "Spustenim skriptu s parametrem -e zapnete extremni testovani. Toto testuje vstupy daleko za hranicemi normalnich cisel, ktere pravdepodobne zpusobi pad programu, pripadne zaplneni maximalniho poctu procesu definovaneho v /proc/sys/kernel/pid_max. Nepredpoikladam, ze by cvici testovali neco z tohoto, takze to je spis pro fajnsmekry."
     echo "Skript predpoklada, ze soubor proj2 si vytvori proj2.out, pokud soubor neexistuje - vystupove soubory jsou ve skriptu premazavany (coz odpovida implementaci, protoze jestli ma make vytvorit spustitelny program nezavisly na souborech, musi si program v pripade neexistence proj2.out tento soubor vytvorit)."
     echo "Je normalni, ze beh skriptu chvili trva, vzhledem k extremnim paramnetrum, ktere programu zadava. Chvili (cca 30 s) pockejte nez situaci vyhodnotite jako deadlock/nekonecny cyklus."
-    echo "Parametr -f vyrazne urychli beh skriptu, ale testovani vystupu neni tak spolehlive - kontroluje se jen ze ke kazdemu vyskytu slova entering se vyskytuje i slovo serving."
-    echo "Parametr -p urychli beh skriptu tak, ze pouzije verzi kontroly vstupu prepsanou do pythonu, protoze bash slow."
+    #echo "Parametr -f vyrazne urychli beh skriptu, ale testovani vystupu neni tak spolehlive - kontroluje se jen ze ke kazdemu vyskytu slova entering se vyskytuje i slovo serving."
+    echo "Parametr -p urychli beh skriptu tak, ze pouzije verzi kontroly vstupu prepsanou do pythonu, protoze bash slow. Credits nalezi kolegovi viotal#1256"
     echo "V pripade problemu piste na dc: White Knight#8252"
     echo "PS: Berte to s rezervou, nemusi to fungovat spravne vsem, je to splacane na koleni v autobusu a jsem clovek co ze shell projektu dostal 6 bodu"
     exit 0
