@@ -5,6 +5,39 @@ RED='\033[0;31m'
 YELLOW='\033[0;33m'
 NC='\033[0m' # No Color
 
+function show_help(){
+    echo -e "Usage:
+    ${YELLOW}./test.sh [FILTER]${NC}
+        Tester vypisuje vsechny testovane vstupy.
+        V pripade chyby vypise ocekavany navratovy kod programu a skutecny navratovy kod.
+        Pokud se tester sekne, znamena to pravdepodobne deadlock/nekonecny cyklus ve vasem programu.
+        Skript predpoklada, ze soubor proj2 si vytvori proj2.out, pokud soubor neexistuje.
+        Je normalni, ze beh skriptu chvili trva (v jeho pomalejsi variante).
+        V pripade problemu piste na dc: White Knight#8252
+        PS: Berte to s rezervou, jsem clovek co ze shell projektu dostal 6 bodu.
+
+    ${YELLOW}PREREQUISITIES${NC}
+        soubory: \"kontrola-vystupu.sh\", \"kontrola-vystupu.py\" a \"Makefile\"ve stejném adresáři jako tento skript.
+        kontrola vystupu.sh je dostupná na https://moodle.vut.cz/course/view.php?id=231005, ostatí na gitu https://github.com/xjanst03/IOS_tester_2023
+
+    ${YELLOW}FILTERS${NC}
+    [${GREEN}-l${NC}]
+        Běží s ${GREEN}L${NC}engálovým (pomalým) skriptem pro kontrolu výstupu.
+        Tato varianta se použije automaticky, pokud v adresáři není soubor kontrol-vystupu.py
+
+    [${GREEN}-e${NC}]
+        Zapne ${GREEN}E${NC}xtrémní variantu testů.
+        Toto není dvakrát bezpečná varianta, zkouší to věci typu překročení rozsahu unsigned long u argumentů NU a NZ.
+        Cvičící toto pravděpodobně totot nebudou testovat, je to spíše varianta pro IOS enjoyers.
+    
+    ${YELLOW}CREDITS${NC}
+        viotal#1256 - rychlý python skript na kontrolu výstupu
+        Kubulambula#8412 - čitelný help
+        White Knight#8252 - skript, testy
+"
+exit 0
+}
+
 proj2out_check() {
     if [[ ! -f "proj2.out" ]]
     then
@@ -12,71 +45,38 @@ proj2out_check() {
     exit 1
     fi
 
-    if [[ ! -f "./kontrola-vystupu.sh" ]]
+    if [[ $1 == "-l" ]]
     then
-        echo -e  "${RED}Error: File ./kontrola-vystupu.sh not found!${NC}"
-    exit 1
-    fi
-
-    if [[ $1 == "-f" ]]
-    then
-        if [[ ! -f "./wordcount" ]]
+        if [[ ! -f "./kontrola-vystupu.sh" ]]
         then
-            echo "Error: Wordcount file not found, make sure it is in the same directory as test script!"
+            echo -e  "${RED}ERROR: File ./kontrola-vystupu.sh not found!${NC}"
+            exit 1
+        else
+            cat ./proj2.out | ./kontrola-vystupu.sh
         fi
-
-        cat ./proj2.out | ./wordcount 2>./wordcount.tmp
-
-        cat ./wordcount.tmp | \
-        awk \
-            -v services=0; \
-            '{ 
-                for (i = 1; i <= NF; i++) {
-                    if($4 == "entering") {
-                        services = services + 1;
-                    }
-                    if($4 == "serving") {
-                        services = services - 1;
-                    }
-                }
-
-                if (services != 0) {
-                    print "WARNING: Not all customers have been served!"
-                }
-            }'
-
-        #               if((date_a < $i) && ($i < date_b)) {
-
-        rm ./wordcount.tmp
-    elif [[ $1 == "-p" ]]
-    then
-        echo -e "${YELLOW}"
-        python3 kontrola-vystupu.py
-        echo -e "${NC}"
     else
-
-        echo -e "${YELLOW}"
-        cat ./proj2.out | ./kontrola-vystupu.sh
-        echo -e "${NC}"
-
+        if [[ ! -f "./kontrola-vystupu.py" ]]
+        then
+            echo -e  "${YELLOW}WARNING: File ./kontrola-vystupu.py not found, running with slower kontrola-vystupu.sh!${NC}"
+            if [[ ! -f "./kontrola-vystupu.sh" ]]
+            then
+                echo -e  "${RED}ERROR: File ./kontrola-vystupu.sh not found!${NC}"
+                exit 1
+            else
+                cat ./proj2.out | ./kontrola-vystupu.sh
+            fi
+        else
+            echo -e "${YELLOW}"
+            python3 kontrola-vystupu.py
+            echo -e "${NC}"
+        fi
     fi
-
     rm ./proj2.out
 }
 
 if [[ $1 == "-h" ]]
 then
-    echo "IOS projekt 2 tester"
-    echo "Tester vypisuje vsechny testovane vstupy a v pripade chyby vypise ocekavany navratovy kod programu a skutecny navratovy kod. Pokud se tester sekne, znamena to pravdepodobne deadlock ve vasem programu"
-    echo "Prerekvizity: Funkcni Makefile, skript \"kontrola-vystupu.sh\", pripadne program wordcount ve stejnem adresari jako je tento skript. test-vystupu.sh je dostupny na https://moodle.vut.cz/course/view.php?id=231005"
-    echo "Spustenim skriptu s parametrem -e zapnete extremni testovani. Toto testuje vstupy daleko za hranicemi normalnich cisel, ktere pravdepodobne zpusobi pad programu, pripadne zaplneni maximalniho poctu procesu definovaneho v /proc/sys/kernel/pid_max. Nepredpoikladam, ze by cvici testovali neco z tohoto, takze to je spis pro fajnsmekry."
-    echo "Skript predpoklada, ze soubor proj2 si vytvori proj2.out, pokud soubor neexistuje - vystupove soubory jsou ve skriptu premazavany (coz odpovida implementaci, protoze jestli ma make vytvorit spustitelny program nezavisly na souborech, musi si program v pripade neexistence proj2.out tento soubor vytvorit)."
-    echo "Je normalni, ze beh skriptu chvili trva, vzhledem k extremnim paramnetrum, ktere programu zadava. Chvili (cca 30 s) pockejte nez situaci vyhodnotite jako deadlock/nekonecny cyklus."
-    echo "Parametr -f vyrazne urychli beh skriptu, ale testovani vystupu neni tak spolehlive - kontroluje se jen ze ke kazdemu vyskytu slova entering se vyskytuje i slovo serving."
-    echo "Parametr -p urychli beh skriptu tak, ze pouzije verzi kontroly vstupu prepsanou do pythonu, protoze bash slow."
-    echo "V pripade problemu piste na dc: White Knight#8252"
-    echo "PS: Berte to s rezervou, nemusi to fungovat spravne vsem, je to splacane na koleni v autobusu a jsem clovek co ze shell projektu dostal 6 bodu"
-    exit 0
+    show_help
 fi
 
 if [[ ! -f "Makefile" ]]
@@ -272,7 +272,7 @@ echo "Testing max/min valid arguments..."
         echo -e "${RED}FAILED \"./proj2 1 1 10000 1 1\" returned with 1 even though arguments were valid!${NC}"
         exit 1
     else
-        echo -e "${GREEN}OK \"./proj2 1 1 10000 1 1\" ... running ./kontrola-vystupu.sh${NC}"
+        echo -e "${GREEN}OK \"./proj2 1 1 10000 1 1\" ... running ./kontrola-vystupu${NC}"
         if [[ $1 == "-f" ]]
         then
             proj2out_check "-f"
@@ -290,7 +290,7 @@ echo "Testing max/min valid arguments..."
         echo -e "${RED}FAILED \"./proj2 1 1 0 1 1\" returned with 1 even though arguments were valid!${NC}"
         exit 1
     else
-        echo -e "${GREEN}OK \"./proj2 1 1 0 1 1\" ... running ./kontrola-vystupu.sh${NC}"
+        echo -e "${GREEN}OK \"./proj2 1 1 0 1 1\" ... running ./kontrola-vystupu${NC}"
         if [[ $1 == "-f" ]]
         then
             proj2out_check "-f"
@@ -308,7 +308,7 @@ echo "Testing max/min valid arguments..."
         echo -e "${RED}FAILED \"./proj2 1 1 100 1 1\" returned with 1 even though arguments were valid!${NC}"
         exit 1
     else
-        echo -e "${GREEN}OK \"./proj2 1 1 100 1 1\" ... running ./kontrola-vystupu.sh${NC}"
+        echo -e "${GREEN}OK \"./proj2 1 1 100 1 1\" ... running ./kontrola-vystupu${NC}"
         if [[ $1 == "-f" ]]
         then
             proj2out_check "-f"
@@ -326,7 +326,7 @@ echo "Testing max/min valid arguments..."
         echo -e "${RED}FAILED \"./proj2 1 1 0 1 1\" returned with 1 even though arguments were valid!${NC}"
         exit 1
     else
-        echo -e "${GREEN}OK \"./proj2 1 1 0 1 1\" ... running ./kontrola-vystupu.sh${NC}"
+        echo -e "${GREEN}OK \"./proj2 1 1 0 1 1\" ... running ./kontrola-vystupu${NC}"
         if [[ $1 == "-f" ]]
         then
             proj2out_check "-f"
@@ -344,7 +344,7 @@ echo "Testing max/min valid arguments..."
         echo -e "${RED}FAILED \"./proj2 1 1 1 1 10000\" returned with 1 even though arguments were valid!${NC}"
         exit 1
     else
-        echo -e "${GREEN}OK \"./proj2 1 1 1 1 10000\" ... running ./kontrola-vystupu.sh${NC}"
+        echo -e "${GREEN}OK \"./proj2 1 1 1 1 10000\" ... running ./kontrola-vystupu${NC}"
         if [[ $1 == "-f" ]]
         then
             proj2out_check "-f"
@@ -362,7 +362,7 @@ echo "Testing max/min valid arguments..."
         echo -e "${RED}FAILED \"./proj2 1 1 1 1 0\" returned with 1 even though arguments were valid!${NC}"
         exit 1
     else
-        echo -e "${GREEN}OK \"./proj2 1 1 1 1 0\" ... running ./kontrola-vystupu.sh${NC}"
+        echo -e "${GREEN}OK \"./proj2 1 1 1 1 0\" ... running ./kontrola-vystupu${NC}"
         if [[ $1 == "-f" ]]
         then
             proj2out_check "-f"
@@ -380,7 +380,7 @@ echo "Testing max/min valid arguments..."
         echo -e "${RED}FAILED \"./proj2 100 1 1 1 10000\" returned with 1 even though arguments were valid!${NC}"
         exit 1
     else
-        echo -e "${GREEN}OK \"./proj2 100 1 1 1 10000\" ... running ./kontrola-vystupu.sh${NC}"
+        echo -e "${GREEN}OK \"./proj2 100 1 1 1 10000\" ... running ./kontrola-vystupu${NC}"
         if [[ $1 == "-f" ]]
         then
             proj2out_check "-f"
@@ -398,7 +398,7 @@ echo "Testing max/min valid arguments..."
         echo -e "${RED}FAILED \"./proj2 1 100 1 1 10000\" returned with 1 even though arguments were valid!${NC}"
         exit 1
     else
-        echo -e "${GREEN}OK \"./proj2 1 100 1 1 10000\" ... running ./kontrola-vystupu.sh${NC}"
+        echo -e "${GREEN}OK \"./proj2 1 100 1 1 10000\" ... running ./kontrola-vystupu${NC}"
         if [[ $1 == "-f" ]]
         then
             proj2out_check "-f"
@@ -416,7 +416,7 @@ echo "Testing max/min valid arguments..."
         echo -e "${RED}FAILED \"./proj2 0 1 1 1 1\" returned with 1 even though arguments were valid!${NC}"
         exit 1
     else
-        echo -e "${GREEN}OK \"./proj2 0 1 1 1 1\" ... running ./kontrola-vystupu.sh${NC}"
+        echo -e "${GREEN}OK \"./proj2 0 1 1 1 1\" ... running ./kontrola-vystupu${NC}"
         if [[ $1 == "-f" ]]
         then
             proj2out_check "-f"
@@ -431,7 +431,7 @@ echo "Testing max/min valid arguments..."
 if [[ $1 == "-e" ]]
 then
 #test extremnich hodnot NZ a NU
-echo "Ruining your day by tring arguments that are far above normally used numbers..."
+echo "Ruining your day by trying arguments that are far above normally used numbers..."
     echo "Running \"./proj2 1000000000000000000000000000000000 1 1 1 1...\""
     ./proj2 1000000000000000000000000000000000 1 1 1 1
     echo "Running \"./proj2 1 1000000000000000000000000000000000 1 1 1...\""
