@@ -85,7 +85,9 @@ proj2out_check() {
                 echo -e "${NC}"
             fi
         else
+            echo -e "${YELLOW}"
             cat ./proj2.out | ./kontrola-vystupu.c
+            echo -e "${NC}"
         fi
     else
         if [[ ! -f "./kontrola-vystupu.py" ]]
@@ -106,7 +108,14 @@ proj2out_check() {
             echo -e "${NC}"
         fi
     fi
-    rm ./proj2.out
+    clear_output
+}
+
+function clear_output() {
+    if [[ -f ./proj2.out ]]
+    then
+        rm proj2.out
+    fi
 }
 
 
@@ -162,7 +171,7 @@ echo "Testing missing arguments..."
     if [[ $? != 1 ]]
     then
         echo -e "${RED}FAILED \"./proj2\" returned with: $?. Return code 1 expected!${NC}"
-        rm ./proj2.out
+        clear_output
         exit 1
     else 
         echo -e "${GREEN}OK ./proj2${NC}" 
@@ -172,7 +181,7 @@ echo "Testing missing arguments..."
     if [[ $? != 1 ]]
     then
         echo -e "${RED}proj2 returned with: $?. Return code 1 expected!${NC}"
-        rm ./proj2.out
+        clear_output
         exit 1
     else 
         echo -e "${GREEN}OK ./proj2 1${NC}" 
@@ -182,7 +191,7 @@ echo "Testing missing arguments..."
     if [[ $? != 1 ]]
     then
         echo -e "${RED}proj2 returned with: $?. Return code 1 expected!${NC}"
-        rm ./proj2.out
+        clear_output
         exit 1
     else 
         echo -e "${GREEN}OK ./proj2 1 1${NC}" 
@@ -192,7 +201,7 @@ echo "Testing missing arguments..."
     if [[ $? != 1 ]]
     then
         echo -e "${RED}proj2 returned with: $?. Return code 1 expected!${NC}"
-        rm ./proj2.out
+        clear_output
         exit 1
     else 
         echo -e "${GREEN}OK ./proj2 1 1 1${NC}" 
@@ -202,7 +211,7 @@ echo "Testing missing arguments..."
     if [[ $? != 1 ]]
     then
         echo -e "${RED}proj2 returned with: $?. Return code 1 expected!${NC}"
-        rm ./proj2.out
+        clear_output
         exit 1
     else 
         echo -e "${GREEN}OK ./proj2 1 1 1 1${NC}" 
@@ -217,6 +226,7 @@ echo "Testing non-numeric arguments..."
     else
         echo -e "${GREEN}OK ./proj2 k 1 1 1 1${NC}" 
     fi
+    clear_output
 
     ./proj2 1 o 1 1 1 &>/dev/null
     if [[ $? != 1 ]]
@@ -225,6 +235,7 @@ echo "Testing non-numeric arguments..."
     else
         echo -e "${GREEN}OK ./proj2 1 o 1 1 1${NC}" 
     fi
+    clear_output
 
     ./proj2 1 1 k 1 1 &>/dev/null
     if [[ $? != 1 ]]
@@ -233,7 +244,8 @@ echo "Testing non-numeric arguments..."
     else
         echo -e "${GREEN}OK ./proj2 1 1 k 1 1${NC}" 
     fi
-    
+    clear_output
+
     ./proj2 1 1 1 o 1 &>/dev/null
     if [[ $? != 1 ]]
     then
@@ -241,6 +253,7 @@ echo "Testing non-numeric arguments..."
     else
         echo -e "${GREEN}OK ./proj2 1 1 1 o 1${NC}" 
     fi
+    clear_output
 
     ./proj2 1 1 1 1 t &>/dev/null
     if [[ $? != 1 ]]
@@ -249,11 +262,7 @@ echo "Testing non-numeric arguments..."
     else
         echo -e "${GREEN}OK ./proj2 1 1 1 1 t${NC}" 
     fi
-    
-    if [[ ! -f "./proj2" ]]
-    then
-        rm ./proj2.out
-    fi
+    clear_output
 
 #promenne mimo zadany rozsah - nema projit!:
 echo "Testing invalid arguments..."
@@ -266,6 +275,7 @@ echo "Testing invalid arguments..."
         echo -e "${RED}FAILED \"./proj2 1 0 1 1 1\" returned with: $?. Return code 1 expected!${NC}"
         exit 1
     fi
+    clear_output
 
     ./proj2 1 1 -1 1 1 &>/dev/null
     if [[ $? == 1 ]]
@@ -275,6 +285,7 @@ echo "Testing invalid arguments..."
         echo -e "${RED}FAILED \"./proj2 1 1 -1 1 1\" returned with: $?. Return code 1 expected!${NC}"
         exit 1
     fi
+    clear_output
 
     ./proj2 1 1 10001 1 1 &>/dev/null
     if [[ $? == 1 ]]
@@ -284,6 +295,7 @@ echo "Testing invalid arguments..."
         echo -e "${RED}FAILED \"./proj2 1 1 10001 1 1\" returned with: $?. Return code 1 expected!${NC}"
         exit 1
     fi
+    clear_output
 
     ./proj2 1 1 1 -1 1 &>/dev/null
     if [[ $? == 1 ]]
@@ -293,6 +305,7 @@ echo "Testing invalid arguments..."
         echo -e "${RED}FAILED \"./proj2 1 1 1 -1 1\" returned with: $?. Return code 1 expected!${NC}"
         exit 1
     fi
+    clear_output
 
     ./proj2 1 1 1 101 1 &>/dev/null
     if [[ $? == 1 ]]
@@ -302,6 +315,7 @@ echo "Testing invalid arguments..."
         echo -e "${RED}FAILED \"./proj2 1 1 1 101 1\" returned with: $?. Return code 1 expected!${NC}"
         exit 1
     fi
+    clear_output
 
     ./proj2 1 1 1 1 -1 &>/dev/null
     if [[ $? == 1 ]]
@@ -311,6 +325,7 @@ echo "Testing invalid arguments..."
         echo -e "${RED}FAILED \"./proj2 1 1 1 1 -1\" returned with: $?. Return code 1 expected!${NC}"
         exit 1
     fi
+    clear_output
 
     ./proj2 1 1 1 1 10001 &>/dev/null
     if [[ $? == 1 ]]
@@ -320,200 +335,190 @@ echo "Testing invalid arguments..."
         echo -e "${RED}FAILED \"./proj2 1 1 1 1 10001\" returned with: $?. Return code 1 expected!${NC}"
         exit 1
     fi
-
-    if [[ ! -f "./proj2" ]]
-    then
-        rm ./proj2.out
-    fi
+    clear_output
 
 #promenne tesne v zadanem rozsahu - ma projit!:======================================================================
 echo "Testing max/min valid arguments..."
-    ./proj2 1 1 10000 1 1
+    ./proj2 4 2 10000 10 100
     if [[ $? == 1 ]]
     then
-        echo -e "${RED}FAILED \"./proj2 1 1 10000 1 1\" returned with 1 even though arguments were valid!${NC}"
+        echo -e "${RED}FAILED \"./proj2 4 2 10000 10 100\" returned with 1 even though arguments were valid!${NC}"
+        clear_output
         exit 1
     else
-        echo -e "${GREEN}OK \"./proj2 1 1 10000 1 1\" ... running ./kontrola-vystupu${NC}"
-        if [[ $1 == "-f" ]]
-        then
-            proj2out_check "-f"
-        elif [[ $1 == "-p" ]]
-        then
-            proj2out_check "-p"
-        else
-            proj2out_check
-        fi
+        echo -e "${GREEN}OK \"./proj2 4 2 10000 10 100\" ... running ./kontrola-vystupu${NC}"
+        proj2out_check
     fi
 
-    ./proj2 1 1 0 1 1
+    ./proj2 4 2 0 100 100
     if [[ $? == 1 ]]
     then
-        echo -e "${RED}FAILED \"./proj2 1 1 0 1 1\" returned with 1 even though arguments were valid!${NC}"
+        echo -e "${RED}FAILED \"./proj2 4 2 0 100 100\" returned with 1 even though arguments were valid!${NC}"
+        clear_output
         exit 1
     else
-        echo -e "${GREEN}OK \"./proj2 1 1 0 1 1\" ... running ./kontrola-vystupu${NC}"
-        if [[ $1 == "-f" ]]
-        then
-            proj2out_check "-f"
-        elif [[ $1 == "-p" ]]
-        then
-            proj2out_check "-p"
-        else
-            proj2out_check
-        fi
+        echo -e "${GREEN}OK \"./proj2 4 2 0 100 100\" ... running ./kontrola-vystupu${NC}"
+        proj2out_check
     fi
 
-    ./proj2 1 1 100 1 1
+    ./proj2 4 2 100 1 100
     if [[ $? == 1 ]]
     then
-        echo -e "${RED}FAILED \"./proj2 1 1 100 1 1\" returned with 1 even though arguments were valid!${NC}"
+        echo -e "${RED}FAILED \"./proj2 4 2 100 1 100\" returned with 1 even though arguments were valid!${NC}"
+        clear_output
         exit 1
     else
-        echo -e "${GREEN}OK \"./proj2 1 1 100 1 1\" ... running ./kontrola-vystupu${NC}"
-        if [[ $1 == "-f" ]]
-        then
-            proj2out_check "-f"
-        elif [[ $1 == "-p" ]]
-        then
-            proj2out_check "-p"
-        else
-            proj2out_check
-        fi
+        echo -e "${GREEN}OK \"./proj2 4 2 100 1 100\" ... running ./kontrola-vystupu${NC}"
+        proj2out_check
     fi
     
-    ./proj2 1 1 0 1 1
+    ./proj2 4 2 0 1 100
     if [[ $? == 1 ]]
     then
-        echo -e "${RED}FAILED \"./proj2 1 1 0 1 1\" returned with 1 even though arguments were valid!${NC}"
+        echo -e "${RED}FAILED \"./proj2 4 2 0 1 100\" returned with 1 even though arguments were valid!${NC}"
+        clear_output
         exit 1
     else
-        echo -e "${GREEN}OK \"./proj2 1 1 0 1 1\" ... running ./kontrola-vystupu${NC}"
-        if [[ $1 == "-f" ]]
-        then
-            proj2out_check "-f"
-        elif [[ $1 == "-p" ]]
-        then
-            proj2out_check "-p"
-        else
-            proj2out_check
-        fi
+        echo -e "${GREEN}OK \"./proj2 4 2 0 1 100\" ... running ./kontrola-vystupu${NC}"
+        proj2out_check
     fi
 
-    ./proj2 1 1 1 1 10000
+    ./proj2 4 2 1 1 100
     if [[ $? == 1 ]]
     then
-        echo -e "${RED}FAILED \"./proj2 1 1 1 1 10000\" returned with 1 even though arguments were valid!${NC}"
+        echo -e "${RED}FAILED \"./proj2 4 2 1 1 100\" returned with 1 even though arguments were valid!${NC}"
+        clear_output
         exit 1
     else
-        echo -e "${GREEN}OK \"./proj2 1 1 1 1 10000\" ... running ./kontrola-vystupu${NC}"
-        if [[ $1 == "-f" ]]
-        then
-            proj2out_check "-f"
-        elif [[ $1 == "-p" ]]
-        then
-            proj2out_check "-p"
-        else
-            proj2out_check
-        fi
+        echo -e "${GREEN}OK \"./proj2 4 2 1 1 100\" ... running ./kontrola-vystupu${NC}"
+        proj2out_check
     fi
 
-    ./proj2 1 1 1 1 0
+    ./proj2 4 2 1 1 0
     if [[ $? == 1 ]]
     then
-        echo -e "${RED}FAILED \"./proj2 1 1 1 1 0\" returned with 1 even though arguments were valid!${NC}"
+        echo -e "${RED}FAILED \"./proj2 4 2 1 1 0\" returned with 1 even though arguments were valid!${NC}"
+        clear_output
         exit 1
     else
-        echo -e "${GREEN}OK \"./proj2 1 1 1 1 0\" ... running ./kontrola-vystupu${NC}"
-        if [[ $1 == "-f" ]]
-        then
-            proj2out_check "-f"
-        elif [[ $1 == "-p" ]]
-        then
-            proj2out_check "-p"
-        else
-            proj2out_check
-        fi
+        echo -e "${GREEN}OK \"./proj2 4 2 1 1 0\" ... running ./kontrola-vystupu${NC}"
+        proj2out_check
     fi
 
-    ./proj2 100 1 1 1 10000
+
+    ./proj2 100 1 1 1 100
     if [[ $? == 1 ]]
     then
-        echo -e "${RED}FAILED \"./proj2 100 1 1 1 10000\" returned with 1 even though arguments were valid!${NC}"
+        echo -e "${RED}FAILED \"./proj2 100 1 1 1 100\" returned with 1 even though arguments were valid!${NC}"
+        clear_output
         exit 1
     else
-        echo -e "${GREEN}OK \"./proj2 100 1 1 1 10000\" ... running ./kontrola-vystupu${NC}"
-        if [[ $1 == "-f" ]]
-        then
-            proj2out_check "-f"
-        elif [[ $1 == "-p" ]]
-        then
-            proj2out_check "-p"
-        else
-            proj2out_check
-        fi
+        echo -e "${GREEN}OK \"./proj2 100 1 1 1 100\" ... running ./kontrola-vystupu${NC}"
+        proj2out_check
     fi
 
-    ./proj2 1 100 1 1 10000
+    ./proj2 1 100 1 1 100
     if [[ $? == 1 ]]
     then
-        echo -e "${RED}FAILED \"./proj2 1 100 1 1 10000\" returned with 1 even though arguments were valid!${NC}"
+        echo -e "${RED}FAILED \"./proj2 1 100 1 1 100\" returned with 1 even though arguments were valid!${NC}"
+        clear_output
         exit 1
     else
-        echo -e "${GREEN}OK \"./proj2 1 100 1 1 10000\" ... running ./kontrola-vystupu${NC}"
-        if [[ $1 == "-f" ]]
-        then
-            proj2out_check "-f"
-        elif [[ $1 == "-p" ]]
-        then
-            proj2out_check "-p"
-        else
-            proj2out_check
-        fi
+        echo -e "${GREEN}OK \"./proj2 1 100 1 1 100\" ... running ./kontrola-vystupu${NC}"
+        proj2out_check
     fi
 
-    ./proj2 0 1 1 1 1
+    ./proj2 0 1 1 1 10
     if [[ $? == 1 ]]
     then
-        echo -e "${RED}FAILED \"./proj2 0 1 1 1 1\" returned with 1 even though arguments were valid!${NC}"
+        echo -e "${RED}FAILED \"./proj2 0 1 1 1 10\" returned with 1 even though arguments were valid!${NC}"
+        clear_output
         exit 1
     else
-        echo -e "${GREEN}OK \"./proj2 0 1 1 1 1\" ... running ./kontrola-vystupu${NC}"
-        if [[ $1 == "-f" ]]
-        then
-            proj2out_check "-f"
-        elif [[ $1 == "-p" ]]
-        then
-            proj2out_check "-p"
-        else
-            proj2out_check
-        fi
+        echo -e "${GREEN}OK \"./proj2 0 1 1 1 10\" ... running ./kontrola-vystupu${NC}"
+        proj2out_check
     fi
+
+#nahodne argumenty programu
+
+echo "Testing randomized arguments..."
+RANDOM=$$
+for i in {0..5}
+do
+    NZ=$(($RANDOM%50))
+    NU=$(($RANDOM%50)); ((NU++))
+    TZ=$(($RANDOM%10000))
+    TU=$(($RANDOM%100))
+    F=$(($RANDOM%1000))
+
+    ./proj2 $NZ $NU $TZ $TU $F
+    if [[ $? == 1 ]]
+    then
+        echo -e "${RED}FAILED \"./proj2 $NZ $NU+1 $TZ $TU $F\" returned with 1 even though arguments were valid!${NC}"
+        clear_output
+        exit 1
+    else
+        echo -e "${GREEN}OK \"./proj2 $NZ $NU $TZ $TU $F\" ... running ./kontrola-vystupu${NC}"
+        proj2out_check
+    fi
+done
+
+
 
 if [[ $E == 1 ]]
 then
 #test extremnich hodnot NZ a NU
-echo "Ruining your day by trying arguments that are far above normally used numbers..."
+echo "Ruining your day by trying arguments that are far above normally used numbers"
+echo -e "${YELLOW}WARNING:${NC} Please note, that result ${GREEN}OK${NC} is based purely on the program not crushing."
     echo "Running \"./proj2 1000000000000000000000000000000000 1 1 1 1...\""
     ./proj2 1000000000000000000000000000000000 1 1 1 1
+    clear_output
+    echo -e "${GREEN}OK${NC}"
+
     echo "Running \"./proj2 1 1000000000000000000000000000000000 1 1 1...\""
     ./proj2 1 1000000000000000000000000000000000 1 1 1
+    clear_output
+    echo -e "${GREEN}OK${NC}"
+
     echo "Running \"10000000000 1 1 1 1...\""
     ./proj2 10000000000 1 1 1 1
+    clear_output
+    echo -e "${GREEN}OK${NC}"
+
     echo "Running \"./proj2 1 10000000000 1 1 1...\""
     ./proj2 1 10000000000 1 1 1
+    clear_output
+    echo -e "${GREEN}OK${NC}"
+
     echo "Running \"./proj2 5000000000 1 1 1 1...\""
     ./proj2 5000000000 1 1 1 1
+    clear_output
+    echo -e "${GREEN}OK${NC}"
+
     echo "Running \"./proj2 1 5000000000 1 1 1...\""
     ./proj2 1 5000000000 1 1 1
+    clear_output
+    echo -e "${GREEN}OK${NC}"
+
     echo "Running \"./proj2 1 0.5 1 1 1...\""
     ./proj2 1 0.5 1 1 1
+    clear_output
+    echo -e "${GREEN}OK${NC}"
+
     echo "Running \"./proj2 0.5 1 1 1 1...\""
     ./proj2 0.5 1 1 1 1
+    clear_output
+    echo -e "${GREEN}OK${NC}"
+
     echo "Running \"./proj2 1 helloworld 1 1 1...\""
     ./proj2 1 helloworld 1 1 1
+    clear_output
+    echo -e "${GREEN}OK${NC}"
+
     echo "Running \"./proj2 helloworld 1 1 1 1...\""
     ./proj2 helloworld 1 1 1 1
+    clear_output
+    echo -e "${GREEN}OK${NC}"
 fi
 
 echo -e "Named semaphores sentenced by you to wander across the vast plains of /dev/shm for eternity:${RED}"
