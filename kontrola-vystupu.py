@@ -37,27 +37,27 @@ Closing_n = 0
 with open('proj2.out', 'r') as f:
     for line in f:
         if re.search(Z_start, line):
-            Z_start_n = 1
+            Z_start_n += 1
         elif re.search(Z_in, line):
-            Z_in_n = 1
+            Z_in_n += 1
         elif re.search(Z_called, line):
-            Z_called_n = 1
+            Z_called_n += 1
         elif re.search(Z_home, line):
-            Z_home_n = 1
+            Z_home_n += 1
         elif re.search(U_start, line):
-            U_start_n = 1
+            U_start_n += 1
         elif re.search(U_home, line):
-            U_home_n = 1
+            U_home_n += 1
         elif re.search(U_break, line):
-            U_break_n = 1
+            U_break_n += 1
         elif re.search(U_breakF, line):
-            U_breakF_n = 1
+            U_breakF_n += 1
         elif re.search(U_serving, line):
-            U_serving_n = 1
+            U_serving_n += 1
         elif re.search(U_servingF, line):
-            U_servingF_n = 1
+            U_servingF_n += 1
         elif re.search(Closing, line):
-            Closing_n = 1
+            Closing_n += 1
         else:
             print("Line format error:", line)
 
@@ -81,3 +81,23 @@ if not U_servingF_n:
     print("WARNING: no U finished a service")
 if not Closing_n:
     print("WARNING: no closing")
+if not (Z_home_n == Z_start_n):
+    print("ERROR: Z started more than gone home")
+    print("Z started:" + str(Z_start_n))
+    print("Z gone home:" + str(Z_home_n))
+if not (U_home_n == U_start_n):
+    print("ERROR: U started more than gone home")
+    print("U started:" + str(U_start_n))
+    print("U gone home:" + str(U_home_n))
+if not (U_serving_n == U_servingF_n):
+    print("ERROR: U started serving more than finished")
+    print("U started serving:" + str(U_serving_n))
+    print("U finished serving:" + str(U_servingF_n))
+if not (U_break_n == U_breakF_n):
+    print("ERROR: U started more breaks than finished")
+    print("U started " + str(U_break_n) + " breaks")
+    print("U finished " + str(U_breakF_n) + " breaks")
+if not (Z_in_n == Z_called_n):
+    print("ERROR: Called less Z than entered service queues")
+    print("Z entered: " + str(Z_in_n))
+    print("Z called: " + str(Z_called_n))
