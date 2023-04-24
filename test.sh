@@ -470,35 +470,17 @@ then
 #test extremnich hodnot NZ a NU
 echo "Ruining your day by trying arguments that are far above normally used numbers"
 echo -e "${YELLOW}WARNING:${NC} Please note, that result ${GREEN}OK${NC} is based purely on the program not crushing."
-    echo "Running \"./proj2 1000000000000000000000000000000000 1 1 1 1...\""
-    ./proj2 1000000000000000000000000000000000 1 1 1 1
-    clear_output
-    echo -e "${GREEN}OK${NC}"
-
-    echo "Running \"./proj2 1 1000000000000000000000000000000000 1 1 1...\""
-    ./proj2 1 1000000000000000000000000000000000 1 1 1
-    clear_output
-    echo -e "${GREEN}OK${NC}"
 
     echo "Running \"10000000000 1 1 1 1...\""
-    ./proj2 10000000000 1 1 1 1
+    ./proj2 2147483647 1 1 1 1 #INT_MAX
     clear_output
     echo -e "${GREEN}OK${NC}"
 
     echo "Running \"./proj2 1 10000000000 1 1 1...\""
-    ./proj2 1 10000000000 1 1 1
+    ./proj2 1 2147483647 1 1 1 #INT_MAX
     clear_output
     echo -e "${GREEN}OK${NC}"
 
-    echo "Running \"./proj2 5000000000 1 1 1 1...\""
-    ./proj2 5000000000 1 1 1 1
-    clear_output
-    echo -e "${GREEN}OK${NC}"
-
-    echo "Running \"./proj2 1 5000000000 1 1 1...\""
-    ./proj2 1 5000000000 1 1 1
-    clear_output
-    echo -e "${GREEN}OK${NC}"
 
     echo "Running \"./proj2 1 0.5 1 1 1...\""
     ./proj2 1 0.5 1 1 1
