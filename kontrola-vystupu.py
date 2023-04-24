@@ -89,3 +89,7 @@ if not (U_home_n == U_start_n):
     print("ERROR: U started more than gone home")
     print("U started:" + str(U_start_n))
     print("U gone home:" + str(U_home_n))
+if not (U_serving_n == U_servingF_n):
+    print("ERROR: U started serving more than finished")
+    print("U started serving:" + str(U_serving_n))
+    print("U finished serving:" + str(U_servingF_n))
