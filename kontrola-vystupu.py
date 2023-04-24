@@ -97,3 +97,7 @@ if not (U_break_n == U_breakF_n):
     print("ERROR: U started more breaks than finished")
     print("U started " + str(U_break_n) + " breaks")
     print("U finished " + str(U_breakF_n) + " breaks")
+if not (Z_in_n == Z_called_n):
+    print("ERROR: Called less Z than entered service queues")
+    print("Z entered: " + str(Z_in_n))
+    print("Z called: " + str(Z_called_n))
