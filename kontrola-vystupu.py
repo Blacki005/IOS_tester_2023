@@ -93,3 +93,7 @@ if not (U_serving_n == U_servingF_n):
     print("ERROR: U started serving more than finished")
     print("U started serving:" + str(U_serving_n))
     print("U finished serving:" + str(U_servingF_n))
+if not (U_break_n == U_breakF_n):
+    print("ERROR: U started more breaks than finished")
+    print("U started " + str(U_break_n) + " breaks")
+    print("U finished " + str(U_breakF_n) + " breaks")
