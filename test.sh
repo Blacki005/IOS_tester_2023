@@ -469,7 +469,7 @@ if [[ $E == 1 ]]
 then
 #test extremnich hodnot NZ a NU
 echo "Ruining your day by trying arguments that are far above normally used numbers"
-echo -e "${YELLOW}WARNING:${NC} Please note, that result ${GREEN}OK${NC} is based purely on the program not crushing."
+echo -e "${YELLOW}WARNING:${NC} Please note, that result ${GREEN}OK${NC} is based purely on the program not crashing."
 
     echo "Running \"10000000000 1 1 1 1...\""
     ./proj2 2147483647 1 1 1 1 #INT_MAX
