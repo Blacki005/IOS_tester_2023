@@ -86,7 +86,7 @@ proj2out_check() {
             fi
         else
             echo -e "${YELLOW}"
-            cat ./proj2.out | ./kontrola-vystupu.c
+            ./kontrola-vystupu $1 $2 <proj2.out
             echo -e "${NC}"
         fi
     else
@@ -141,6 +141,13 @@ while getopts "lhec" opt; do
             if [[ $L == 1 ]]
             then
                 echo "${RED}ERROR: options -l and -c are mutually exclusive!${NC}"
+            fi
+
+            gcc -std=gnu99 -Wall -Wextra -pedantic -Werror kontrola-vystupu.c -o kontrola-vystupu
+            if [[ $? != 0 ]]
+            then
+                echo "${RED}ERROR: can't compile 'kontrola-vystupu.c' using default (python) instead.${NC}"
+                C=0
             fi
             ;;
         *)
@@ -347,7 +354,7 @@ echo "Testing max/min valid arguments..."
         exit 1
     else
         echo -e "${GREEN}OK \"./proj2 4 2 10000 10 100\" ... running ./kontrola-vystupu${NC}"
-        proj2out_check
+        proj2out_check 4 2
     fi
 
     ./proj2 4 2 0 100 100
@@ -358,7 +365,7 @@ echo "Testing max/min valid arguments..."
         exit 1
     else
         echo -e "${GREEN}OK \"./proj2 4 2 0 100 100\" ... running ./kontrola-vystupu${NC}"
-        proj2out_check
+        proj2out_check 4 2
     fi
 
     ./proj2 4 2 100 1 100
@@ -369,7 +376,7 @@ echo "Testing max/min valid arguments..."
         exit 1
     else
         echo -e "${GREEN}OK \"./proj2 4 2 100 1 100\" ... running ./kontrola-vystupu${NC}"
-        proj2out_check
+        proj2out_check 4 2
     fi
     
     ./proj2 4 2 0 1 100
@@ -380,7 +387,7 @@ echo "Testing max/min valid arguments..."
         exit 1
     else
         echo -e "${GREEN}OK \"./proj2 4 2 0 1 100\" ... running ./kontrola-vystupu${NC}"
-        proj2out_check
+        proj2out_check 4 2
     fi
 
     ./proj2 4 2 1 1 100
@@ -391,7 +398,7 @@ echo "Testing max/min valid arguments..."
         exit 1
     else
         echo -e "${GREEN}OK \"./proj2 4 2 1 1 100\" ... running ./kontrola-vystupu${NC}"
-        proj2out_check
+        proj2out_check 4 2
     fi
 
     ./proj2 4 2 1 1 0
@@ -402,7 +409,7 @@ echo "Testing max/min valid arguments..."
         exit 1
     else
         echo -e "${GREEN}OK \"./proj2 4 2 1 1 0\" ... running ./kontrola-vystupu${NC}"
-        proj2out_check
+        proj2out_check 4 2
     fi
 
 
@@ -414,7 +421,7 @@ echo "Testing max/min valid arguments..."
         exit 1
     else
         echo -e "${GREEN}OK \"./proj2 100 1 1 1 100\" ... running ./kontrola-vystupu${NC}"
-        proj2out_check
+        proj2out_check 100 1
     fi
 
     ./proj2 1 100 1 1 100
@@ -425,7 +432,7 @@ echo "Testing max/min valid arguments..."
         exit 1
     else
         echo -e "${GREEN}OK \"./proj2 1 100 1 1 100\" ... running ./kontrola-vystupu${NC}"
-        proj2out_check
+        proj2out_check 1 100
     fi
 
     ./proj2 0 1 1 1 10
@@ -436,7 +443,7 @@ echo "Testing max/min valid arguments..."
         exit 1
     else
         echo -e "${GREEN}OK \"./proj2 0 1 1 1 10\" ... running ./kontrola-vystupu${NC}"
-        proj2out_check
+        proj2out_check 0 1
     fi
 
 #nahodne argumenty programu
@@ -459,7 +466,7 @@ do
         exit 1
     else
         echo -e "${GREEN}OK \"./proj2 $NZ $NU $TZ $TU $F\" ... running ./kontrola-vystupu${NC}"
-        proj2out_check
+        proj2out_check $NZ $NU
     fi
 done
 
